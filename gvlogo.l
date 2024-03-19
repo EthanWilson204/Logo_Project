@@ -15,7 +15,7 @@ extern void yyerror(const char* s);
  color		{ return COLOR;}
  clear		{ return CLEAR;}
  turn		{ return TURN;}
- loop		{ for(STRING = NUMBER; STRING < NUMBER; STRING PLUS NUMBER)}
+ loop		{ for(int i = 0; i < NUMBER; i++) }
  move		{ return MOVE;}
  end 		{ return END;}
  save		{ return SAVE;}
