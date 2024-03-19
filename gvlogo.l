@@ -8,10 +8,11 @@ extern void yyerror(const char* s);
 
 %%
 
+//functions and regex
 penup		{ return PENUP; }
-pendown	{ return PENDOWN; }
+pendown		{ return PENDOWN; }
 print		{ printf("Hello World!\n"); }
-change_color   { return CHANGE_COLOR; }
+change_color   	{ return CHANGE_COLOR; }
 color		{ return COLOR; }
 clear		{ return CLEAR; }
 turn		{ return TURN; }
@@ -19,9 +20,10 @@ move		{ return MOVE; }
 end 		{ return END; }
 save		{ return SAVE; }
 string		{ return STRING; }
-qstring	{ return QSTRING; }
+qstring		{ return QSTRING; }
 ;		{ return SEP; }
 
+//numbers and operations
 [0-9]+		{ yylval.f = atof(yytext); return NUMBER;}		
 \+		{ return PLUS; }
 -		{ return SUB; }
@@ -29,6 +31,7 @@ qstring	{ return QSTRING; }
 \/		{ return DIV; }
 [A-Za-z]+ 	{ yylval.s = (yytext); return STRING; }
 
+//whitespace and no chars
 [ \t\r\n]	;
 .		{ yyerror("Lexing Syntax error.\n"); } 
 
