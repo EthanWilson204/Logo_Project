@@ -20,6 +20,9 @@ end 		{ return END; }
 save		{ return SAVE; }
 string		{ return STRING; }
 qstring		{ return QSTRING; }
+goto		{ return GOTO; }
+
+
 ;		{ return SEP; }
 [0-9]+		{ yylval.f = atof(yytext); return NUMBER;}		
 \+		{ return PLUS; }

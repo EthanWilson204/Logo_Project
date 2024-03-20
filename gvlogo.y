@@ -67,6 +67,8 @@ void shutdown();
 %token NUMBER
 %token END
 %token SAVE
+%token GOTO
+%token WHERE
 %token PLUS SUB MULT DIV
 %token<s> STRING QSTRING
 %type<f> expression expression_list NUMBER
@@ -83,16 +85,14 @@ statement:		command SEP					{ prompt(); }
 		;
 command:		PENUP						{ penup(); }
 		|	PENDOWN						{ pendown(); }
-		|	MOVE						{ move(argv[2]); }
-		|	TURN						{ turn(argv[2]); }
-		|	SAVE						{ ; }
-		|	PRINT						{ ; }
-		|	COLOR						{ change_color(argv[2], argv[3], argv[4]); }
-		|	CLEAR						{ ; }
-		//|	GOTO						{ ; }
-		//|	WHERE						{ ; }
-
-
+		|	MOVE NUMBER					{ move($2); }
+		|	TURN NUMBER					{ turn($2); }
+		|       COLOR NUMBER NUMBER NUMBER                      { change_color($2, $3, $4); }
+		|       GOTO NUMBER NUMBER                              { go_to($2, $3); }
+		|	WHERE						{ where(); }
+		//|	PRINT						{ ; }
+		//|	CLEAR						{ ; }
+		//|	SAVE						{ ; }
 		;
 expression_list:
 		|	// Complete these and any missing rules
@@ -233,6 +233,14 @@ void startup(){
 		SDL_Delay(1000 / 60);
 	}
 }
+//created
+void go_to(int new_x, int new_y) {	
+	while ((x >= 0 && x <= WIDTH) && (y >=0 && y <= HEIGHT)) {
+		x = new_x;
+		y = new_y;
+	}
+}
+//created
 
 int run(void* data){
 	prompt();
