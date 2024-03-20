@@ -44,6 +44,8 @@ void change_color(int r, int g, int b);
 void clear();
 void save(const char* path);
 void shutdown();
+void go_to(double, double);
+void where();
 
 %}
 
@@ -234,13 +236,16 @@ void startup(){
 	}
 }
 //created
-void go_to(int new_x, int new_y) {	
+void go_to(double new_x, double new_y) {	
 	while ((x >= 0 && x <= WIDTH) && (y >=0 && y <= HEIGHT)) {
 		x = new_x;
 		y = new_y;
 	}
 }
 //created
+void where() {
+	printf("Coordinates of Mouse: (%f,%f)", x, y);
+}
 
 int run(void* data){
 	prompt();
