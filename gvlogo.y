@@ -82,6 +82,17 @@ statement:		command SEP					{ prompt(); }
 		|	error '\n' 					{ yyerrok; prompt(); }
 		;
 command:		PENUP						{ penup(); }
+		|	PENDOWN						{ pendown(); }
+		|	MOVE						{ move(argv[2]); }
+		|	TURN						{ turn(argv[2]); }
+		|	SAVE						{ ; }
+		|	PRINT						{ ; }
+		|	COLOR						{ change_color(argv[2], argv[3], argv[4]); }
+		|	CLEAR						{ ; }
+		//|	GOTO						{ ; }
+		//|	WHERE						{ ; }
+
+
 		;
 expression_list:
 		|	// Complete these and any missing rules
