@@ -80,7 +80,7 @@ void where();
 program:		statement_list END				{ printf("Program complete."); shutdown(); exit(0); }
 		;
 statement_list:		statement					
-		|	statement statement_list
+		|	statement_list statement
 		;
 statement:		command SEP					{ prompt(); }
 		|	error '\n' 					{ yyerrok; prompt(); }
@@ -92,19 +92,21 @@ command:		PENUP						{ penup(); }
 		|       COLOR NUMBER NUMBER NUMBER                      { change_color($2, $3, $4); }
 		|       GOTO NUMBER NUMBER                              { go_to($2, $3); }
 		|	WHERE						{ where(); }
-		//|	PRINT						{ ; }
-		//|	CLEAR						{ ; }
-		//|	SAVE						{ ; }
+		|	PRINT QSTRING					{ printf("%s\n", $2); }
+		|	CLEAR						{ clear(); }
+		|	SAVE STRING					{ save($2); }
+		|	PRINT expression_list				{ printf("%.0f\n", $2);}
 		;
-expression_list:
-		|	// Complete these and any missing rules
-		;
-expression:		NUMBER PLUS expression				{ $$ = $1 + $3; }
-		|	NUMBER MULT expression				{ $$ = $1 * $3; }
-		|	NUMBER SUB expression				{ $$ = $1 - $3; }
-		|	NUMBER DIV expression				{ $$ = $1 / $3; }
+expression_list:        expression
+                |       expression_list expression
+                ;
+expression:		NUMBER PLUS expression				{ $$ = $1 + $3; printf("%f\n", $$);}
+		|	NUMBER MULT expression				{ $$ = $1 * $3; printf("%f\n", $$);}
+		|	NUMBER SUB expression				{ $$ = $1 - $3; printf("%f\n", $$);}
+		|	NUMBER DIV expression				{ $$ = $1 / $3; printf("%f\n", $$);}
 		|	NUMBER
 		;
+
 
 %%
 
@@ -230,7 +232,7 @@ void startup(){
 			}
 
 		}
-		//SDL_RenderClear(rend);
+		SDL_RenderClear(rend);
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000 / 60);
 	}
@@ -244,7 +246,7 @@ void go_to(double new_x, double new_y) {
 }
 //created
 void where() {
-	printf("Coordinates of Mouse: (%f,%f)", x, y);
+	printf("Coordinates of Mouse: (%.0f,%.0f)\n", x, y);
 }
 
 int run(void* data){
