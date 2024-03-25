@@ -90,7 +90,8 @@ command:		PENUP						{ penup(); }
 		|	MOVE NUMBER					{ move($2); }
 		|	TURN NUMBER					{ turn($2); }
 		|       COLOR NUMBER NUMBER NUMBER                      { change_color($2, $3, $4); }
-		|       GOTO NUMBER NUMBER                              { go_to($2, $3); }
+		|      	CHANGE_COLOR NUMBER NUMBER NUMBER		{ change_color($2, $3, $4); }
+		|	GOTO NUMBER NUMBER                              { go_to($2, $3); }
 		|	WHERE						{ where(); }
 		|	PRINT QSTRING					{ printf("%s\n", $2); }
 		|	CLEAR						{ clear(); }
@@ -156,6 +157,7 @@ void output(const char* s){
 
 void change_color(int r, int g, int b){
 	event.type = COLOR_EVENT;
+	
 	current_color.r = r;
 	current_color.g = g;
 	current_color.b = b;
@@ -232,7 +234,7 @@ void startup(){
 			}
 
 		}
-		SDL_RenderClear(rend);
+		//SDL_RenderClear(rend);
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000 / 60);
 	}
