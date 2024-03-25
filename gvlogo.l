@@ -10,8 +10,7 @@ extern void yyerror(const char* s);
 
 penup		{ return PENUP; }
 pendown		{ return PENDOWN; }
-print		{ printf("Hello World!\n"); }
-change_color   	{ return CHANGE_COLOR; }
+print		{ return PRINT; }
 color		{ return COLOR; }
 clear		{ return CLEAR; }
 turn		{ return TURN; }
@@ -21,8 +20,8 @@ save		{ return SAVE; }
 string		{ return STRING; }
 qstring		{ return QSTRING; }
 goto		{ return GOTO; }
-
-
+where		{ return WHERE; }
+loop		{ return LOOP;}
 ;		{ return SEP; }
 [0-9]+		{ yylval.f = atof(yytext); return NUMBER;}		
 \+		{ return PLUS; }
