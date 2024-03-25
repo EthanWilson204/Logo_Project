@@ -17,8 +17,6 @@ turn		{ return TURN; }
 move		{ return MOVE; }
 end 		{ return END; }
 save		{ return SAVE; }
-string		{ return STRING; }
-qstring		{ return QSTRING; }
 goto		{ return GOTO; }
 where		{ return WHERE; }
 loop		{ return LOOP;}

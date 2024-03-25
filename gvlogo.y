@@ -52,6 +52,7 @@ void where();
 %union {
 	float f;
 	char* s;
+	char* alpha[26];
 }
 
 %locations
@@ -93,7 +94,7 @@ command:		PENUP						{ penup(); }
 		|      	CHANGE_COLOR NUMBER NUMBER NUMBER		{ change_color($2, $3, $4); }
 		|	GOTO NUMBER NUMBER                              { go_to($2, $3); }
 		|	WHERE						{ where(); }
-		|	PRINT QSTRING					{ printf("%s\n", $2); }
+		|	PRINT STRING					{ output($2); }
 		|	CLEAR						{ clear(); }
 		|	SAVE STRING					{ save($2); }
 		|	PRINT expression_list				{ printf("%.0f\n", $2);}
@@ -101,6 +102,10 @@ command:		PENUP						{ penup(); }
 expression_list:        expression
                 |       expression_list expression
                 ;
+string_list:		STRING
+		|	STRING string_list
+		;	
+
 expression:		NUMBER PLUS expression				{ $$ = $1 + $3; printf("%f\n", $$);}
 		|	NUMBER MULT expression				{ $$ = $1 * $3; printf("%f\n", $$);}
 		|	NUMBER SUB expression				{ $$ = $1 - $3; printf("%f\n", $$);}
@@ -239,9 +244,9 @@ void startup(){
 		SDL_Delay(1000 / 60);
 	}
 }
-//created
+//FIXME
 void go_to(double new_x, double new_y) {	
-	while ((x >= 0 && x <= WIDTH) && (y >=0 && y <= HEIGHT)) {
+	if ((x >= 0 && x <= WIDTH) && (y >=0 && y <= HEIGHT)) {
 		x = new_x;
 		y = new_y;
 	}
