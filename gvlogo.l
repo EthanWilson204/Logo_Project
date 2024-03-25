@@ -27,6 +27,7 @@ loop		{ return LOOP;}
 \*		{ return MULT; }
 \/		{ return DIV; }
 [A-Za-z]+ 	{ yylval.s = (yytext); return STRING; }
+\".+\"		{ yylval.s = (yytext); return QSTRING; }
 [ \t\r\n]	;
 .		{ yyerror("Lexing Syntax error.\n"); } 
 

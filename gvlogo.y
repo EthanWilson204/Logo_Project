@@ -95,6 +95,7 @@ command:		PENUP						{ penup(); }
 		|	GOTO NUMBER NUMBER                              { go_to($2, $3); }
 		|	WHERE						{ where(); }
 		|	PRINT STRING					{ output($2); }
+		|	PRINT QSTRING					{ printf("%s", $2); }
 		|	CLEAR						{ clear(); }
 		|	SAVE STRING					{ save($2); }
 		|	PRINT expression_list				{ printf("%.0f\n", $2);}
@@ -102,14 +103,11 @@ command:		PENUP						{ penup(); }
 expression_list:        expression
                 |       expression_list expression
                 ;
-string_list:		STRING
-		|	STRING string_list
-		;	
 
-expression:		NUMBER PLUS expression				{ $$ = $1 + $3; printf("%f\n", $$);}
-		|	NUMBER MULT expression				{ $$ = $1 * $3; printf("%f\n", $$);}
-		|	NUMBER SUB expression				{ $$ = $1 - $3; printf("%f\n", $$);}
-		|	NUMBER DIV expression				{ $$ = $1 / $3; printf("%f\n", $$);}
+expression:		NUMBER PLUS expression				{ $$ = $1 + $3;}
+		|	NUMBER MULT expression				{ $$ = $1 * $3;}
+		|	NUMBER SUB expression				{ $$ = $1 - $3;}
+		|	NUMBER DIV expression				{ $$ = $1 / $3;}
 		|	NUMBER
 		;
 
