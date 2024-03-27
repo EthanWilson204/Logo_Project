@@ -29,6 +29,8 @@ static double x = WIDTH / 2;
 static double y = HEIGHT / 2;
 static int pen_state = 1;
 static double direction = 0.0;
+static int user_index;
+static float symbolTable[26];
 
 int yylex(void);
 int yyerror(const char* s);
@@ -46,13 +48,11 @@ void save(const char* path);
 void shutdown();
 void go_to(double, double);
 void where();
-
 %}
 
 %union {
 	float f;
 	char* s;
-	char* alpha[26];
 }
 
 %locations
@@ -73,13 +73,13 @@ void where();
 %token GOTO
 %token WHERE
 %token PLUS SUB MULT DIV
-%token<s> STRING QSTRING
+%token<s> STRING QSTRING VAR
 %type<f> expression expression_list NUMBER
 
 %%
 
 program:		statement_list END				{ printf("Program complete."); shutdown(); exit(0); }
-		;
+		
 statement_list:		statement					
 		|	statement_list statement
 		;
@@ -99,6 +99,10 @@ command:		PENUP						{ penup(); }
 		|	CLEAR						{ clear(); }
 		|	SAVE STRING					{ save($2); }
 		|	PRINT expression_list				{ printf("%.0f\n", $2);}
+		|	VAR expression_list				{ user_index = (int)$1[1]-65; symbolTable[user_index] = $2; }
+		|	MOVE VAR					{ move(symbolTable[(int)$2[1]]); }	
+		|	GOTO VAR VAR					{ go_to(symbolTable[(int)$2[1]-65], symbolTable[(int)$3[1]-65]); }
+		|	error '\n' 					{ yyerrok; prompt(); }
 		;
 expression_list:        expression
                 |       expression_list expression
@@ -122,7 +126,7 @@ int main(int argc, char** argv){
 int yyerror(const char* s){
 	printf("Error: %s\n", s);
 	return -1;
-};
+}
 
 void prompt(){
 	printf("gv_logo > ");

@@ -20,6 +20,7 @@ save		{ return SAVE; }
 goto		{ return GOTO; }
 where		{ return WHERE; }
 loop		{ return LOOP;}
+\$[A-Z]		{ yylval.s = (yytext); return VAR; }
 ;		{ return SEP; }
 [0-9]+		{ yylval.f = atof(yytext); return NUMBER;}		
 \+		{ return PLUS; }
